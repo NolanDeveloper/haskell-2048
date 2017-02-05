@@ -35,7 +35,24 @@ shiftRight r = padding ++ nonZero
     nonZero = filter (/= 0) r
     nNonZero = length nonZero
     padding = take (4 - nNonZero) $ repeat 0
-    
+
+{-
+
+Probably better option would be shrink to left
+
+consume :: Int -> Row -> Maybe Row
+consume 0 _ = Nothing
+consume n (0:xs) = (0 :) <$> consume n xs
+consume n r@(x:xs) = if n == x then Just (0 : xs)
+                     else Nothing
+
+shrinkLeft :: Row -> Row
+shrinkLeft [] = []
+shrinkLeft (x:xs) = case consume x xs of
+                    Just xs' -> (x + 1) : shrinkLeft xs'
+                    Nothing -> x : shrinkLeft xs
+-}
+
 shrinkRight :: Row -> Row
 shrinkRight [a, b, c, d] = 
     if c ~~ d then
@@ -45,7 +62,7 @@ shrinkRight [a, b, c, d] =
         if b ~~ c then [0, a, b + 1, d]
         else
             if a ~~ b then [0, a + 1, c, d]
-            else           [a, b, c, d]
+            else           [a,     b, c, d]
     where
     x ~~ y = x == y && 0 /= x
 
