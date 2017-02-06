@@ -136,7 +136,7 @@ charToDirection 'l' = DR
 initialGrid :: StdGen -> (Grid, StdGen)
 initialGrid gen = (three, g3)
     where
-    emptyGrid = take 4 $ repeat $ take 4 $ repeat 0
+    emptyGrid = replicate 4 $ replicate 4 0
     (one, g1) = putRandomNumber gen emptyGrid
     (two, g2) = putRandomNumber gen one
     (three, g3) = putRandomNumber gen two
